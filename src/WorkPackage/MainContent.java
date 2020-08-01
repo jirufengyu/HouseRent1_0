@@ -83,7 +83,7 @@ public class MainContent
         System.out.println("请输入你的手机号码：");
         PhoneNumber = scanner.nextLine();
         boolean flag = true;
-        String regExp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$";
+        String regExp = "^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$";
         Pattern p = Pattern.compile(regExp);
         Matcher m = p.matcher(PhoneNumber);
         flag = m.find();//boolean
@@ -184,9 +184,9 @@ public class MainContent
                 PreparedStatement preparedStatement=connection.prepareStatement(InsertUser2);
                 preparedStatement.setString(1,UserId);
                 preparedStatement.setString(2,UserName);
-                preparedStatement.setString(3,PassWord);
-                preparedStatement.setString(4,PhoneNumber);
-                preparedStatement.setString(5,null);
+                preparedStatement.setString(3,null);
+                preparedStatement.setString(4,PassWord);
+                preparedStatement.setString(5,PhoneNumber);
                 preparedStatement.executeUpdate();
                 System.out.println("注册成功，您的ID为："+UserId);
                 this.ShowMain();

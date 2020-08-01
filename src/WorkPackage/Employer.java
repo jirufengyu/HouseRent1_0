@@ -8,23 +8,23 @@ public class Employer extends User{
     /**插入新的出租房信息预备语句*/
     private final String InsertHouse="insert into House values(?,?,?,?,?,?,?,0,1)";
     /**查询已出租的房屋信息预备语句*/
-    private final String QueryRentedHouse="select * from house where Employer_id=?";
+    private final String QueryRentedHouse="select * from House where Employer_ID=?";
     /**查询名下租客信息预备语句*/
-    private final String QueryTenants="select Tenant_id,Name,PhonerNumber from\n"+
-                                      "Rent a join Tenant b on a.Tenant_id=b.Tenant_id\n"+
-                                      "join house c on a.House_id=c.house_id\n"+
-                                      "where house.Employer_id=?";
+    private final String QueryTenants="select Tenant_ID,Name,PhonerNumber from\n"+
+                                      "Rent a join Tenant b on a.Tenant_ID=b.Tenant_ID\n"+
+                                      "join House c on a.House_ID=c.House_ID\n"+
+                                      "where House.Employer_ID=?";
     /**查询租用历史预备语句*/
-    private final String QueryRentHistory="select * from rent_history\n" +
+    private final String QueryRentHistory="select * from Rent_History\n" +
                                           "where Employer_ID=?";
     /**查询租客预备语句*/
     private final String QueryMyTenants="select r.Tenant_ID,h.House_ID\n" +
-                                        "from employer e join house h on e.Employer_ID = h.Employer_ID\n" +
-                                        "     join rent r on h.House_ID = r.House_ID\n" +
+                                        "from Employer e join House h on e.Employer_ID = h.Employer_ID\n" +
+                                        "     join Rent r on h.House_ID = r.House_ID\n" +
                                         "where e.Employer_ID=?";
     /**查询房屋评价预备语句*/
     private final String QueryHouseComment="select Content,Tenant_ID,Comment_Time\n" +
-                                           "from house_comment\n" +
+                                           "from House_comment\n" +
                                            "where House_ID=?";
     
     Employer(String ID, String Password) {
@@ -104,7 +104,7 @@ public class Employer extends User{
              * 从数据库中找出已注册房屋的最大数量，生成房屋的ID
              * 根据已有的最大ID分配新ID，ID为Max(ID)+1
              */
-            ResultSet resultSet=statement.executeQuery("select max(house_id) from house");
+            ResultSet resultSet=statement.executeQuery("select max(House_ID) from House");
             resultSet.next();
             String MaxHouseID=resultSet.getString(1);
             if(MaxHouseID==null) MaxHouseID="00000000"; //最小房间号为 00000001
