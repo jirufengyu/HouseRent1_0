@@ -8,29 +8,29 @@ import java.util.Scanner;
 public class Tenant extends User{
     
     /**根据指定条件搜索房屋预备语句*/
-    private final String SearchHouse="select * from house\n" +
-                                     "where position like ? and floor >= ? and floor <= ? and price >= ? and price <= ? and house_type=? and isrented=0";
+    private final String SearchHouse="select * from House\n" +
+                                     "where Position like ? and Floor >= ? and Floor <= ? and Price >= ? and Price <= ? and House_Type=? and isRented=0";
     /**租用房屋预备语句*/
-    private final String RentHouse="insert into rent values(?,?)";
+    private final String RentHouse="insert into Rent values(?,?)";
     /**更新房屋租用标志预备语句*/
-    private final String SetHouseRented="update house set isRented=1 where House_ID=?";
+    private final String SetHouseRented="update House set isRented=1 where House_ID=?";
     /**更新租用历史表预备语句*/
-    private final String UpdateRentHistory="insert into rent_history values(?,?,?,?,?)";
+    private final String UpdateRentHistory="insert into Rent_History values(?,?,?,?,?)";
     /**查看租用房屋预备语句*/
     private final String QueryRentedHouse="select h.House_ID,h.Position,h.Floor,h.House_Type,h.Price,h.Discription\n" +
-                                          "from rent join house h on rent.House_ID = h.House_ID\n" +
-                                          "where rent.Tenant_ID=?";
+                                          "from Rent join House h on Rent.House_ID = h.House_ID\n" +
+                                          "where Rent.Tenant_ID=?";
     /**查询租用历史*/
-    private final String QueryRentHistory="select * from rent_history\n" +
+    private final String QueryRentHistory="select * from Rent_History\n" +
                                           "where Tenant_ID=?";
     /**房屋退租预备语句*/
-    private final String DeleteRent="delete from rent where House_ID=?";
-    private final String RentBackHouse="update house set isRented=0 where House_ID=?";
+    private final String DeleteRent="delete from Rent where House_ID=?";
+    private final String RentBackHouse="update House set isRented=0 where House_ID=?";
     /**房屋评论预备语句*/
-    private final String CommentHouse="insert into house_comment values(?,?,?,?)";
+    private final String CommentHouse="insert into House_Comment values(?,?,?,?)";
     /**查询房屋评价预备语句*/
     private final String QueryHouseComment="select Content,Tenant_ID,Comment_Time\n" +
-            "from house_comment\n" +
+            "from House_Comment\n" +
             "where House_ID=?";
     
     Tenant(String ID, String Password) {
