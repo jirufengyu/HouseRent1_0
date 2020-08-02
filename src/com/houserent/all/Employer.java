@@ -1,6 +1,5 @@
-package WorkPackage;
+package com.houserent.all;
 
-import java.nio.channels.Pipe;
 import java.sql.*;
 import java.util.Scanner;
 

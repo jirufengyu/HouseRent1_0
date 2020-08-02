@@ -1,4 +1,4 @@
-package WorkPackage;
+package com.houserent.all;
 
 import java.sql.*;
 import java.util.Scanner;

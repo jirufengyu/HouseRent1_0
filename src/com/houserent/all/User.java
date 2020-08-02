@@ -1,4 +1,4 @@
-package WorkPackage;
+package com.houserent.all;
 
 public class User {
     private String ID;

@@ -1,8 +1,6 @@
-package WorkPackage;
+package com.houserent.all;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.Scanner;
 
 /**
  * 程序入口
