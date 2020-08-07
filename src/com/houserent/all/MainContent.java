@@ -1,5 +1,7 @@
 package com.houserent.all;
 
+import com.houserent.dao.RegisterDao;
+
 import java.sql.*;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -93,26 +95,39 @@ public class MainContent
             m = p.matcher(PhoneNumber);
             flag = m.find();//boolean
         }
-
-        try(Connection connection= DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord())){//查询手机是否已被注册
-            PreparedStatement preparedStatement=null;
-            if(Type==1){
-                preparedStatement = connection.prepareStatement("select * from Tenant where PhoneNumber=?");
-            }
-            else if(Type==2){
-                preparedStatement = connection.prepareStatement("select * from Employer where PhoneNumber=?");
-            }
-
-            preparedStatement.setString(1,PhoneNumber);
-            ResultSet resultSet=null;
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                System.out.println("手机号码已被注册");
-                this.Regester();
-            }
-
+//下面的代码被DAO代替
+//        try(Connection connection= DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord())){//查询手机是否已被注册
+////            PreparedStatement preparedStatement=null;
+////            if(Type==1){
+////                preparedStatement = connection.prepareStatement("select * from Tenant where PhoneNumber=?");
+////            }
+////            else if(Type==2){
+////                preparedStatement = connection.prepareStatement("select * from Employer where PhoneNumber=?");
+////            }
+////
+////            preparedStatement.setString(1,PhoneNumber);
+////            ResultSet resultSet=null;
+////            resultSet = preparedStatement.executeQuery();
+////            if(resultSet.next()){
+////                System.out.println("手机号码已被注册");
+////                this.Regester();
+////            }
+////
+////        }
+        String sql=null;
+        if(Type==1){
+                sql="select * from Tenant where PhoneNumber=?";
         }
-
+        else if(Type==2){
+            sql="select * from Employer where PhoneNumber=?";
+        }
+        ResultSet resultSet0=null;
+        RegisterDao registerDao=new RegisterDao();
+        resultSet0 = registerDao.getIsRegisted(sql,PhoneNumber);
+        if(resultSet0.next()){
+            System.out.println("手机号码已被注册");
+            this.Regester();
+        }
 
 
 
@@ -170,24 +185,29 @@ public class MainContent
              */
             if(Type==1)
             {
-                PreparedStatement preparedStatement=connection.prepareStatement(InsertUser1);
-                preparedStatement.setString(1,UserId);
-                preparedStatement.setString(2,UserName);
-                preparedStatement.setString(3,PassWord);
-                preparedStatement.setString(4,PhoneNumber);
-                preparedStatement.executeUpdate();
+//                PreparedStatement preparedStatement=connection.prepareStatement(InsertUser1);
+//                preparedStatement.setString(1,UserId);
+//                preparedStatement.setString(2,UserName);
+//                preparedStatement.setString(3,PassWord);
+//                preparedStatement.setString(4,PhoneNumber);
+//                preparedStatement.executeUpdate();
+                Object[] param={UserId,UserName,PassWord,PhoneNumber};
+                registerDao.updateUser(InsertUser1,param);
+
                 System.out.println("注册成功，您的ID为："+UserId);
                 this.ShowMain();
             }
             else
             {
-                PreparedStatement preparedStatement=connection.prepareStatement(InsertUser2);
-                preparedStatement.setString(1,UserId);
-                preparedStatement.setString(2,UserName);
-                preparedStatement.setString(3,null);
-                preparedStatement.setString(4,PassWord);
-                preparedStatement.setString(5,PhoneNumber);
-                preparedStatement.executeUpdate();
+//                PreparedStatement preparedStatement=connection.prepareStatement(InsertUser2);
+//                preparedStatement.setString(1,UserId);
+//                preparedStatement.setString(2,UserName);
+//                preparedStatement.setString(3,null);
+//                preparedStatement.setString(4,PassWord);
+//                preparedStatement.setString(5,PhoneNumber);
+//                preparedStatement.executeUpdate();
+                Object[] param={UserId,UserName,null,PassWord,PhoneNumber};
+                registerDao.updateUser(InsertUser2,param);
                 System.out.println("注册成功，您的ID为："+UserId);
                 this.ShowMain();
             }
@@ -212,7 +232,7 @@ public class MainContent
         /**
          * 建立数据库连接
          * 根据输入的ID或手机请求对应的密码
-         * 对比实际密码和输入的密码判断是否登录成功
+         * 对比实际密码和输入的密码判断是否登录成公
          */
         try(Connection connection=DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord()))
             {
