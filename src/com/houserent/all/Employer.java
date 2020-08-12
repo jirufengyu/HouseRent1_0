@@ -1,5 +1,7 @@
 package com.houserent.all;
 
+import com.houserent.dao.EmployerDao;
+
 import java.sql.*;
 import java.util.Scanner;
 
@@ -29,7 +31,7 @@ public class Employer extends User{
     Employer(String ID, String Password) {
         super(ID, Password);
     }
-    
+    private EmployerDao employerDao=new EmployerDao();
     /**
      * 雇主的主界面
      * @throws SQLException
@@ -93,25 +95,25 @@ public class Employer extends User{
             System.out.println("价格必须为正数，请重新输入：");
             Price=scanner.nextDouble();
         }
+
+        String HouseID=null;
+        Object[] param={HouseID,super.getID(),Position,Price,Disciption1,Floor,Disciption3};
+
+        employerDao.updateHouse(InsertHouse,param);
         /**
          * 建立数据库连接，向数据中插入对应的房屋信息
-         */
+         被DAO代替
         try(Connection connection= DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord()))
         {
             Statement statement=connection.createStatement();
-            /**
-             * 从数据库中找出已注册房屋的最大数量，生成房屋的ID
-             * 根据已有的最大ID分配新ID，ID为Max(ID)+1
-             */
+
             ResultSet resultSet=statement.executeQuery("select max(House_ID) from House");
             resultSet.next();
             String MaxHouseID=resultSet.getString(1);
             if(MaxHouseID==null) MaxHouseID="00000000"; //最小房间号为 00000001
             int n=Integer.valueOf(MaxHouseID)+1;
             String HouseID=String.valueOf(n);
-            /**
-             * 如果最大房间ID数字小于8位数，补齐
-             */
+
             while(HouseID.length()<8)
             {
                 HouseID="0"+HouseID;
@@ -127,6 +129,7 @@ public class Employer extends User{
             preparedStatement.setString(7,Disciption3);
             preparedStatement.executeUpdate();
         }
+         */
         System.out.println("出租房屋成功");
         ShowMain();
     }

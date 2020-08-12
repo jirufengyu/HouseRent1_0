@@ -121,10 +121,10 @@ public class MainContent
         else if(Type==2){
             sql="select * from Employer where PhoneNumber=?";
         }
-        ResultSet resultSet0=null;
+        Boolean resultSet0=null;
         RegisterDao registerDao=new RegisterDao();
         resultSet0 = registerDao.getIsRegisted(sql,PhoneNumber);
-        if(resultSet0.next()){
+        if(resultSet0){
             System.out.println("手机号码已被注册");
             this.Regester();
         }
@@ -287,6 +287,11 @@ public class MainContent
      */
     void TenantFunction(String ID, String Password) throws SQLException
     {
+        if(ID.length()==11){
+            String sql="SELECT Tenant_ID FROM Tenant where PhoneNumber=?";
+            RegisterDao registerDao=new RegisterDao();
+            ID= registerDao.getPhone2ID(sql,ID);
+        }
         Tenant tenant=new Tenant(ID,Password);
         tenant.ShowMain();
     }
@@ -301,6 +306,11 @@ public class MainContent
      */
     void EmployerFunction(String ID, String Password) throws SQLException
     {
+        if(ID.length()==11){
+            String sql="SELECT Employer_ID FROM Employer where PhoneNumber=?";
+            RegisterDao registerDao=new RegisterDao();
+            ID= registerDao.getPhone2ID(sql,ID);
+        }
         Employer employer=new Employer(ID,Password);
         employer.ShowMain();
     }
