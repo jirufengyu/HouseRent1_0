@@ -142,30 +142,32 @@ public class Employer extends User{
      */
     void CheckRentedHouse() throws SQLException
     {
-        try(Connection connection=DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord()))
-        {
-            PreparedStatement preparedStatement=connection.prepareStatement(QueryRentedHouse);
-            preparedStatement.setString(1,super.getID());
-            ResultSet resultSet=preparedStatement.executeQuery();
-    
-            /**
-             * 遍历查询到的房屋结果集，依次访问每一行，打印出房屋的信息
-             */
-            while(resultSet.next())
-            {
-                System.out.println("房屋ID："+resultSet.getString(1));
-                System.out.println("位置："+resultSet.getString(3));
-                System.out.println("出租价格："+resultSet.getString(4)+"元每月");
-                System.out.println("房屋类型："+resultSet.getString(5));
-                System.out.println("楼层："+resultSet.getString(6));
-                System.out.println("描述："+resultSet.getString(7));
-                System.out.print("出租情况：");
-                if(resultSet.getByte(8)==0) System.out.println("该房屋未出租");
-                else System.out.println("该房屋已出租");
-                QueryHouseComment(resultSet.getString(1),connection);
-                System.out.println("");
-            }
-        }
+
+//        try(Connection connection=DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord()))
+//        {
+//            PreparedStatement preparedStatement=connection.prepareStatement(QueryRentedHouse);
+//            preparedStatement.setString(1,super.getID());
+//            ResultSet resultSet=preparedStatement.executeQuery();
+//
+//            /**
+//             * 遍历查询到的房屋结果集，依次访问每一行，打印出房屋的信息
+//             */
+//            while(resultSet.next())
+//            {
+//                System.out.println("房屋ID："+resultSet.getString(1));
+//                System.out.println("位置："+resultSet.getString(3));
+//                System.out.println("出租价格："+resultSet.getString(4)+"元每月");
+//                System.out.println("房屋类型："+resultSet.getString(5));
+//                System.out.println("楼层："+resultSet.getString(6));
+//                System.out.println("描述："+resultSet.getString(7));
+//                System.out.print("出租情况：");
+//                if(resultSet.getByte(8)==0) System.out.println("该房屋未出租");
+//                else System.out.println("该房屋已出租");
+//                QueryHouseComment(resultSet.getString(1),connection);
+//                System.out.println("");
+//            }
+//        }
+        employerDao.CheckRentedHouse(QueryRentedHouse,super.getID());
         ShowMain();
     }
     
@@ -177,6 +179,7 @@ public class Employer extends User{
      */
     void CheckTenants() throws SQLException
     {
+
         try(Connection connection=DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord()))
         {
             PreparedStatement preparedStatement=connection.prepareStatement(QueryMyTenants);
@@ -243,8 +246,10 @@ public class Employer extends User{
         /**
          * 遍历评论查找结果集，打印评论信息
          */
+        System.out.println("out");
         if(resultSet.next())
         {
+            System.out.println("in");
             System.out.println("该房屋收到如下评论：");
             do {
                 System.out.println("租客ID-"+resultSet.getString(2)+"  "+"评论时间-"+resultSet.getDate(3)+"  评论内容："+resultSet.getString(1));
