@@ -82,6 +82,11 @@ public class EmployerDao extends BaseDao {
         }
 
     }
+
+    /**
+     * 查询评论信息
+     * @param HouseID
+     */
     public void QueryHouseComment(String HouseID) {
         try {
 
@@ -112,6 +117,71 @@ public class EmployerDao extends BaseDao {
             e.printStackTrace();
         } finally {
             super.closeAll(conn, pstmt, rs);
+        }
+    }
+
+    /**
+     * 查询租客信息
+     * @param sql
+     * @param param
+     */
+    public void CheckTenants(String sql,String param){
+        ResultSet resultSet=null;
+        try {
+            conn=getConn();
+            PreparedStatement quest=conn.prepareStatement(sql);     //得到最大的house_ID
+            quest.setString(1,param);
+            resultSet=quest.executeQuery();
+            if(resultSet.next()==false)
+            {
+                System.out.println("您没有任何租客");
+            }else{
+                System.out.println("您的所有租客如下");
+                do{
+                    System.out.println("租客ID："+resultSet.getString(1)+"  "+"租用的房间ID："+resultSet.getString(2));
+                }while(resultSet.next());
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }finally {
+            super.closeAll(conn,pstmt,rs);
+        }
+
+    }
+
+    /**
+     * 查询出租历史
+     * @param sql
+     * @param param
+     */
+    public void CheckRentHistory(String sql,String param){
+        ResultSet resultSet=null;
+        try {
+            conn=getConn();
+            PreparedStatement quest=conn.prepareStatement(sql);     //得到最大的house_ID
+            quest.setString(1,param);
+            resultSet=quest.executeQuery();
+            if(resultSet.next()==false)
+            {
+                System.out.println("您没有任何租用历史");
+            }
+            else
+            {
+                do {
+                    System.out.println("租客ID:"+resultSet.getString(2)+"  "+
+                            "起始时间："+resultSet.getDate(3)+"  "+"结束时间："+resultSet.getDate(4)
+                            +"  "+"总金额："+resultSet.getDouble(5)
+                    );
+                }while (resultSet.next());
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }finally {
+            super.closeAll(conn,pstmt,rs);
         }
     }
 }

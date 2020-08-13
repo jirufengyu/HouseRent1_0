@@ -180,24 +180,25 @@ public class Employer extends User{
     void CheckTenants() throws SQLException
     {
 
-        try(Connection connection=DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord()))
-        {
-            PreparedStatement preparedStatement=connection.prepareStatement(QueryMyTenants);
-            preparedStatement.setString(1,super.getID());
-            ResultSet resultSet=preparedStatement.executeQuery();
-            /**
-             * 查找名下的租客，遍历查找结果集的每一行，打印租客信息
-             */
-            if(resultSet.next()==false)
-            {
-                System.out.println("您没有任何租客");
-            }else{
-                System.out.println("您的所有租客如下");
-                do{
-                    System.out.println("租客ID："+resultSet.getString(1)+"  "+"租用的房间ID："+resultSet.getString(2));
-                }while(resultSet.next());
-            }
-        }
+//        try(Connection connection=DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord()))
+//        {
+//            PreparedStatement preparedStatement=connection.prepareStatement(QueryMyTenants);
+//            preparedStatement.setString(1,super.getID());
+//            ResultSet resultSet=preparedStatement.executeQuery();
+//
+//             //查找名下的租客，遍历查找结果集的每一行，打印租客信息
+//
+//            if(resultSet.next()==false)
+//            {
+//                System.out.println("您没有任何租客");
+//            }else{
+//                System.out.println("您的所有租客如下");
+//                do{
+//                    System.out.println("租客ID："+resultSet.getString(1)+"  "+"租用的房间ID："+resultSet.getString(2));
+//                }while(resultSet.next());
+//            }
+//        }
+        employerDao.CheckTenants(QueryMyTenants,super.getID());
         ShowMain();
     }
     
@@ -209,25 +210,26 @@ public class Employer extends User{
      */
     void CheckRentHistory() throws SQLException
     {
-        try (Connection connection= DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord()))
-        {
-            PreparedStatement preparedStatement=connection.prepareStatement(QueryRentHistory);
-            preparedStatement.setString(1,super.getID());
-            ResultSet resultSet=preparedStatement.executeQuery();
-            if(resultSet.next()==false)
-            {
-                System.out.println("您没有任何租用历史");
-            }
-            else
-            {
-                do {
-                    System.out.println("租客ID:"+resultSet.getString(2)+"  "+
-                            "起始时间："+resultSet.getDate(3)+"  "+"结束时间："+resultSet.getDate(4)
-                            +"  "+"总金额："+resultSet.getDouble(5)
-                    );
-                }while (resultSet.next());
-            }
-        }
+//        try (Connection connection= DriverManager.getConnection(Main.GetURL(),Main.GetUser(),Main.GetPassWord()))
+//        {
+//            PreparedStatement preparedStatement=connection.prepareStatement(QueryRentHistory);
+//            preparedStatement.setString(1,super.getID());
+//            ResultSet resultSet=preparedStatement.executeQuery();
+//            if(resultSet.next()==false)
+//            {
+//                System.out.println("您没有任何租用历史");
+//            }
+//            else
+//            {
+//                do {
+//                    System.out.println("租客ID:"+resultSet.getString(2)+"  "+
+//                            "起始时间："+resultSet.getDate(3)+"  "+"结束时间："+resultSet.getDate(4)
+//                            +"  "+"总金额："+resultSet.getDouble(5)
+//                    );
+//                }while (resultSet.next());
+//            }
+//        }
+        employerDao.CheckRentHistory(QueryRentHistory,super.getID());
         ShowMain();
     }
     
@@ -237,15 +239,13 @@ public class Employer extends User{
      * @param connection 数据库连接
      * @throws SQLException
      * @description 通过房间的ID号查询该房间的评论
-     */
+
     void QueryHouseComment(String HouseID,Connection connection) throws SQLException
     {
         PreparedStatement preparedStatement=connection.prepareStatement(QueryHouseComment);
         preparedStatement.setString(1,HouseID);
         ResultSet resultSet=preparedStatement.executeQuery();
-        /**
-         * 遍历评论查找结果集，打印评论信息
-         */
+
         System.out.println("out");
         if(resultSet.next())
         {
@@ -256,4 +256,5 @@ public class Employer extends User{
             }while(resultSet.next());
         }
     }
+    */
 }
